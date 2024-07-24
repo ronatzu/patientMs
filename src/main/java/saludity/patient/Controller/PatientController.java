@@ -19,11 +19,14 @@ public class PatientController {
     private PatientService patientService;
 
 
-    @GetMapping("/patient/{patientid}")
-    public ResponseEntity<PatientEntity> getPatient(@PathVariable String patientci) {
-        PatientEntity patient = patientService.getPatient(patientci);
+    @GetMapping("/patient")
+    public ResponseEntity<PatientEntity> getPatient(@Valid @RequestParam String ci) {
+        PatientEntity patient = patientService.getPatient(ci);
+        System.out.printf(patient.toString());
         return ResponseEntity.ok(patient);
     }
+
+
 
     @PostMapping("/patient")
     public ResponseEntity<PatientEntity> updatePatient(@Valid @RequestBody CreatePatientRequest createPatientRequest) {

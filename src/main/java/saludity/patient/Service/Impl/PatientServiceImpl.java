@@ -17,6 +17,7 @@ import saludity.patient.Service.PatientService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -35,11 +36,15 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientEntity createPatient(CreatePatientRequest request) {
 
-        
+        if (request.getBirthday() == null) {
+             throw new IllegalArgumentException("The birthday cannot be null");
+        }
+        LocalDate today = LocalDate.now();
+
         PatientEntity patientEntity = PatientEntity.builder()
                 .firstname(request.getFirstname())
                 .lastname(request.getLastname())
-                .age(request.getAge())
+                .age(String.valueOf(Period.between(request.getBirthday(), today).getYears()))
                 .ci(request.getCi())
                 .phone(request.getPhone())
                 .gender(request.getGender())

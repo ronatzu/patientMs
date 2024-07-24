@@ -42,7 +42,6 @@ public class PatientEntity {
     private String gender;
 
     @Column(name= "email",nullable = false, unique = true)
-    @Email(message = "Email should be valid")
     private String email;
 
     @Column(name= "birthday",nullable = false)

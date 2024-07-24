@@ -9,7 +9,6 @@ public interface PatientService {
 
     PatientEntity createPatient(CreatePatientRequest request);
 
-
     PatientEntity updatePatient(String patientId, String request);
 
     PatientEntity getPatient(String ci);
