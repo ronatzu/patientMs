@@ -1,13 +1,11 @@
 package saludity.patient.Service;
 
 import saludity.patient.Model.Pojo.PatientEntity;
-import saludity.patient.Model.Request.CreatePatientRequest;
-
-import java.util.List;
+import saludity.patient.Data.DTO.PatientDTO;
 
 public interface PatientService {
 
-    PatientEntity createPatient(CreatePatientRequest request);
+    PatientEntity createPatient(PatientDTO request);
 
     PatientEntity updatePatient(String patientId, String request);
 

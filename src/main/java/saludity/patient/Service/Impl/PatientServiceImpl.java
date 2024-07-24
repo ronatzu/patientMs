@@ -9,16 +9,13 @@ import com.github.fge.jsonpatch.mergepatch.JsonMergePatch;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import saludity.patient.Data.PatientRepository;
+import saludity.patient.Data.DAO.PatientRepository;
 import saludity.patient.Model.Pojo.PatientEntity;
-import saludity.patient.Model.Request.CreatePatientRequest;
+import saludity.patient.Data.DTO.PatientDTO;
 import saludity.patient.Service.PatientService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -34,7 +31,7 @@ public class PatientServiceImpl implements PatientService {
 
     //@Transactional
     @Override
-    public PatientEntity createPatient(CreatePatientRequest request) {
+    public PatientEntity createPatient(PatientDTO request) {
 
         if (request.getBirthday() == null) {
              throw new IllegalArgumentException("The birthday cannot be null");
