@@ -1,16 +1,20 @@
 package saludity.patient.Controller;
 
+import com.github.fge.jsonpatch.JsonPatch;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import saludity.patient.Model.Pojo.PatientEntity;
-import saludity.patient.Data.DTO.PatientDTO;
+import saludity.patient.Persistence.DTO.PatientRequestDTO;
+import saludity.patient.Persistence.DTO.PatientProfileDTO;
 import saludity.patient.Service.PatientService;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.NoSuchElementException;
 
 @RestController
 @Slf4j
@@ -22,46 +26,35 @@ public class PatientController {
 
 
     //medicos
-    @GetMapping("/patient")
+    @GetMapping("/patients/{ci}")
     public ResponseEntity<?> getPatient(
-            @RequestParam @Pattern(regexp = "^[0-9]{10}$", message = "CI must be 10 digits") String ci) {
+            @PathVariable @Pattern(regexp = "^[0-9]{10}$", message = "CI must be 10 digits") String ci) {
+
+        System.out.println("empezo");
         try {
-            PatientEntity patient = patientService.getPatient(ci);
+            PatientProfileDTO patient = patientService.getPatient(ci);
             if (patient == null) {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(PatientDTO.builder()
-                    .firstname(patient.getFirstname())
-                    .lastname(patient.getLastname())
-                    .ci(patient.getCi())
-                    .phone(patient.getPhone())
-                    .gender(patient.getGender())
-                    .email(patient.getEmail())
-                    .birthday(patient.getBirthday())
-                    .build());
+            return ResponseEntity.ok(patient);
         } catch (DataAccessException exDt) {
             return ResponseEntity.internalServerError().body("An error occurred while accessing the patient data.");
-        } catch (Exception ex) {
+        }catch (NoSuchElementException nse) {
+            return ResponseEntity.notFound().build();
+        }catch (Exception ex) {
             return ResponseEntity.internalServerError().body("An unexpected error occurred. Please try again later.");
         }
-        }
+    }
 
 
-    @PostMapping("/patient")
-    public ResponseEntity<PatientDTO> createPatient(@Valid @RequestBody PatientDTO patientDTO) {
+    @PostMapping("/patients")
+    public ResponseEntity<PatientProfileDTO> createPatient(@Valid @RequestBody PatientRequestDTO patientRequestDTO) throws URISyntaxException {
 
-        PatientEntity patient =patientService.createPatient(patientDTO);
+        PatientProfileDTO patient =patientService.createPatient(patientRequestDTO);
 
         if (patient != null) {
-            return ResponseEntity.ok( PatientDTO.builder()
-                    .firstname(patient.getFirstname())
-                    .lastname(patient.getLastname())
-                    .ci(patient.getCi())
-                    .phone(patient.getPhone())
-                    .gender(patient.getGender())
-                    .email(patient.getEmail())
-                    .birthday(patient.getBirthday())
-                    .build());
+            URI location = new URI("/patients/" + patient.getCi());
+            return ResponseEntity.created(location).body(patient);
 
 
         } else {
@@ -69,23 +62,22 @@ public class PatientController {
         }
     }
 
-    @PatchMapping("/patient/{patientid}")
-    public ResponseEntity<PatientDTO> updatePatient(@PathVariable String patientid, @Valid @RequestBody String patchBody) {
+    @PatchMapping("/patients/{ci}")
+    public ResponseEntity<PatientProfileDTO> updatePatient(@PathVariable  String ci,@RequestBody JsonPatch patchBody) {
 
-        PatientEntity patched =patientService.updatePatient(patientid,patchBody);
+
+        System.out.println("cambio");
+        System.out.println(patchBody);
+        PatientProfileDTO patched =patientService.updatePatient(ci,patchBody);
+        System.out.println(patched);
+
         if (patched != null) {
-            return ResponseEntity.ok( PatientDTO.builder()
-                    .firstname(patched.getFirstname())
-                    .lastname(patched.getLastname())
-                    .ci(patched.getCi())
-                    .phone(patched.getPhone())
-                    .gender(patched.getGender())
-                    .email(patched.getEmail())
-                    .birthday(patched.getBirthday())
-                    .build());
+            return ResponseEntity.ok(patched);
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
+
+
 
 }

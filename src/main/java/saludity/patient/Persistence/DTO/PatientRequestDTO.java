@@ -1,4 +1,4 @@
-package saludity.patient.Data.DTO;
+package saludity.patient.Persistence.DTO;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -7,9 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
-@ToString
-@Builder
-public class PatientDTO implements Serializable {
+public class PatientRequestDTO implements Serializable {
     @NotEmpty(message = "First name cannot be empty")
     private String firstname;
 

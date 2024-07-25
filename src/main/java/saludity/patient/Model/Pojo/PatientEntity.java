@@ -30,7 +30,7 @@ public class PatientEntity {
     private String lastname;
 
     @Column(name= "age",nullable = false)
-    private String age;
+    private byte age;
 
     @Column(name= "ci",nullable = false, unique = true,length = 10)
     private String ci;
@@ -48,7 +48,7 @@ public class PatientEntity {
     private LocalDate birthday;
 
     @Column(name="creation",nullable = false)
-    private LocalDate creationDate;
+    private LocalDateTime creationDate;
 
     @OneToMany(targetEntity = MedicalResumeEntity.class,fetch = FetchType.LAZY,mappedBy = "patientEntity")
     private List<MedicalResumeEntity> medicalResume;

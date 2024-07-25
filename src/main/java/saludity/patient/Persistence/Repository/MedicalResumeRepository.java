@@ -1,4 +1,4 @@
-package saludity.patient.Data.DAO;
+package saludity.patient.Persistence.Repository;
 
 import org.springframework.data.repository.CrudRepository;
 import saludity.patient.Model.Pojo.MedicalResumeEntity;

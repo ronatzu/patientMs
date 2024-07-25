@@ -1,14 +1,14 @@
 package saludity.patient.Service;
 
-import saludity.patient.Model.Pojo.PatientEntity;
-import saludity.patient.Data.DTO.PatientDTO;
+import saludity.patient.Persistence.DTO.PatientRequestDTO;
+import saludity.patient.Persistence.DTO.PatientProfileDTO;
 
 public interface PatientService {
 
-    PatientEntity createPatient(PatientDTO request);
+    PatientProfileDTO createPatient(PatientRequestDTO patientRequestDTO);
 
-    PatientEntity updatePatient(String patientId, String request);
+    PatientProfileDTO updatePatient(String patientId, PatientRequestDTO patientRequestDTO);
 
-    PatientEntity getPatient(String ci);
+    PatientProfileDTO getPatient(String ci);
 
 }
