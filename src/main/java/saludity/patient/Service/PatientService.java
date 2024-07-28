@@ -7,7 +7,7 @@ public interface PatientService {
 
     PatientProfileDTO createPatient(PatientRequestDTO patientRequestDTO);
 
-    PatientProfileDTO updatePatient(String patientId, PatientRequestDTO patientRequestDTO);
+    PatientProfileDTO updatePatient(String patientId, PatientRequestDTO patientRequestDTO) throws IllegalAccessException;
 
     PatientProfileDTO getPatient(String ci);
 

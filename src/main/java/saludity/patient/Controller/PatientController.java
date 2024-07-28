@@ -1,6 +1,5 @@
 package saludity.patient.Controller;
 
-import com.github.fge.jsonpatch.JsonPatch;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +22,6 @@ public class PatientController {
 
     @Autowired
     private PatientService patientService;
-
 
     //medicos
     @GetMapping("/patients/{ci}")
@@ -63,13 +61,12 @@ public class PatientController {
     }
 
     @PatchMapping("/patients/{ci}")
-    public ResponseEntity<PatientProfileDTO> updatePatient(@PathVariable  String ci,@RequestBody JsonPatch patchBody) {
-
+    public ResponseEntity<PatientProfileDTO> updatePatient(@PathVariable  String ci,@RequestBody PatientRequestDTO patchBody) throws IllegalAccessException {
 
         System.out.println("cambio");
-        System.out.println(patchBody);
+        //System.out.println(patchBody);
         PatientProfileDTO patched =patientService.updatePatient(ci,patchBody);
-        System.out.println(patched);
+        //System.out.println(patched);
 
         if (patched != null) {
             return ResponseEntity.ok(patched);

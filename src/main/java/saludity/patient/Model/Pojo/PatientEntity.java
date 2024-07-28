@@ -50,8 +50,6 @@ public class PatientEntity {
     @Column(name="creation",nullable = false)
     private LocalDateTime creationDate;
 
-    @OneToMany(targetEntity = MedicalResumeEntity.class,fetch = FetchType.LAZY,mappedBy = "patientEntity")
-    private List<MedicalResumeEntity> medicalResume;
 
 
 }
